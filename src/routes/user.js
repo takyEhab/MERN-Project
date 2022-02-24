@@ -36,9 +36,7 @@ router.post("/login", async (req, res) => {
       const token = jwt.sign(
         { user_id: user._id, username },
         process.env.TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
+        { expiresIn: "3d" }
       );
       // user
       res.status(200).json({ user, token });
@@ -75,14 +73,11 @@ router.post('/register', async (req, res) => {
     const token = jwt.sign(
       { user_id: user._id, username },
       process.env.TOKEN_KEY,
-      {
-        expiresIn: "2h",
-      }
+      { expiresIn: "3d" }
     );
 
     // return new user
     res.status(201).json({ user, token });
-
 
   } catch (err) {
     res.status(500).json(err)
@@ -91,7 +86,7 @@ router.post('/register', async (req, res) => {
 
 // deleting user
 router.delete('/:id', async (req, res) => {
-  res.send('fuck off')
+  return res.send('fuck off')
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) return res.sendStatus(404);

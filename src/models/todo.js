@@ -8,7 +8,7 @@ const todoSchema = mongoose.Schema({
   todo: {
     type: String,
     required: 'todo can\'t be null'
-  }, 
+  },
   created: {
     type: Date,
     required: true,
