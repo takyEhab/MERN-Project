@@ -5,6 +5,7 @@ require('dotenv').config()
 //import routes
 const todoRoute = require('./routes/todo')
 const userRoute = require('./routes/user')
+const transferRoute = require('./routes/transferMoney')
 
 // middleware
 const morgan = require('morgan')
@@ -24,7 +25,7 @@ db.once('open', () => console.log('connected to mongoDB'))
 //routes
 app.use('/todo', todoRoute)
 app.use('/user', userRoute)
-
+app.use('/money', transferRoute)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => console.log(`The app listening on port ${PORT}!`))

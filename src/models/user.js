@@ -11,6 +11,11 @@ const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-
   //     }, 'Please fill a valid email address'],
   //   match: [emailRegexp, 'Please fill a valid email address']
   // },
+const messagesSchema = new mongoose.Schema({
+  message: String,
+  time: {type: Date, default: Date.now}
+});
+  
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -29,7 +34,9 @@ const UserSchema = mongoose.Schema({
     type: String,
     enum: ['admin', 'seller', 'user'],
     default: 'user'
-  }
+  },
+  notifications: [messagesSchema]
+  
 })
 
 module.exports = mongoose.model('User', UserSchema)
