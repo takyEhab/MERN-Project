@@ -1,29 +1,75 @@
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import { useState } from 'react';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
+const generateColor = (str) => {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  var color = '#';
+  for (var i = 0; i < 3; i++) {
+    var value = (hash >> (i * 8)) & 0xFF;
+    color += ('00' + value.toString(16)).substr(-2);
+  }
+  return color;
+}
 
 function App() {
-  var stringToColour = function (str) {
-    var hash = 0;
-    for (var i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    var colour = '#';
-    for (var i = 0; i < 3; i++) {
-      var value = (hash >> (i * 8)) & 0xFF;
-      colour += ('00' + value.toString(16)).substr(-2);
-    }
-    return colour;
-  }
-
+  const [isLogged, setIsLogged] = useState(false)
   return (
-    <div style={{ display: 'flex', backgroundColor: 'grey', justifyContent: 'end' }}>
-      <h1 style={{ marginRight: 20, backgroundColor: '#fff', padding: 10, fontSize: 20 }}>Login</h1>
-      <h1 style={{ marginRight: 20, backgroundColor: '#fff', padding: 10, fontSize: 20 }}>Register</h1>
-      <h1 style={{ backgroundColor: stringToColour("Taky"), padding: 10, fontSize: 20, marginRight: 10, borderRadius: 25 }} >
+    <BrowserRouter>
+
+      <div style={{ display: 'flex', backgroundColor: '#dddddd', justifyContent: 'end' }}>
+        {/* <Button style={{ margin: 10 }} onClick={() => setIsLogged(!isLogged)} variant="contained">{isLogged ? 'Logout' : 'Login'}</Button> */}
+
+        <Link to='/home' style={{ margin: 10 }}  >home</Link>
+
+        <Link to='/login' style={{ margin: 10 }}  >login</Link>
+        <Link to='/register' style={{ margin: 10 }} >Register</Link>
+
+        {/*       
+          {
+    isLogged ?
+      <Avatar sx={{ bgcolor: generateColor("Taky"), margin: 1 }} aria-label="recipe">
         T
-      </h1>
-      {/* <h1>
-        {stringToColour("greenish")}
-      </h1> */}
-    </div>
+      </Avatar>
+      :
+      <Link to='/signin' style={{ margin: 10 }} onClick={() => setIsLogged(!isLogged)} >Register</Link>
+
+  } */}
+      </div >
+      <Routes>
+        <Route path="home" element={<div style={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>{localStorage.getItem('token')[0]}</div>} />
+
+        <Route path="login" element={<SignIn />} />
+        <Route path="register" element={<SignUp />} />
+
+
+        {/* 
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="blogs" element={<Blogs />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter> */}
+        {/* <SignIn /> */}
+      </Routes >
+
+    </BrowserRouter >
+
   );
 }
 
