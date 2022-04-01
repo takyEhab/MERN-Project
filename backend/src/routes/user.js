@@ -15,6 +15,17 @@ router.get('/', verifyToken, async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 })
+// get myInfo 
+router.get('/profile', verifyToken, async (req, res) => {
+  // try {
+  //   const user = await User.findById(req.params.id)
+  //   if (!user) return res.sendStatus(404);
+  //   res.status(200).json(user)
+  // } catch (err) {
+  //   err.name === 'CastError' ? res.sendStatus(404) : res.status(500).json({ message: err.message });
+  // }
+  res.status(200).json(req.myInfo)
+})
 
 // logging
 router.post("/login", async (req, res) => {

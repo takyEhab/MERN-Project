@@ -15,14 +15,17 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import Slide from '@mui/material/Slide';
 import axios from 'axios';
-// import { useHistory } from "react-router-dom";
-// import { useSnackbar } from 'notistack';
+import { useNavigate } from "react-router-dom";
+import { UserContext } from './App';
+
+import { useSnackbar } from 'notistack';
 // import { useDispatch } from 'react-redux';
 // import { logIn } from './store/actions';
 
 const theme = createTheme();
 
 export default function SignIn() {
+  const { setProfile } = useContext(UserContext)
 
   const [error, setError] = React.useState({
     message: '',
@@ -30,8 +33,8 @@ export default function SignIn() {
     isError: false
   })
 
-  // const { enqueueSnackbar } = useSnackbar();
-  // const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const login = async (username, password) => {
     try {
@@ -40,16 +43,18 @@ export default function SignIn() {
       // const config = { headers: { Authorization: `Token ${res.data.token}` } }
       // localStorage.setItem('CONFIG', JSON.stringify(config))
       // dispatch(logIn(res.data.user, config));
-      // enqueueSnackbar('you are loged in successfully!', { variant: 'success' });
-      // history.push('/');
+
       let res = await axios.post('http://localhost:8000/user/login', { username, password });
       console.log(res.data)
+      setProfile(res.data.user)
       localStorage.setItem('token', res.data.token)
+      enqueueSnackbar('you are logged in successfully!', { variant: 'success' });
+      navigate('/home');
     } catch (err) {
       // if (err.response) {
       // setError({ close: false, isError: true, message: err.response.data['non_field_errors'][0] })
-      console.log(err.response)
-      // setError({ close: false, isError: true, message: err.response.data })
+      // console.log(err.response)
+      setError({ close: false, isError: true, message: err.response.data })
 
       // }
     }
