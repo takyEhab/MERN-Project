@@ -5,6 +5,7 @@ const verifyToken = require('../middleware/auth')
 
 // send money to some user_id
 // complete error handling 
+
 router.post('/send/:name', verifyToken, async (req, res) => {
   try {
 

@@ -5,6 +5,41 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const verifyToken = require('../middleware/auth')
 
+//seen message
+router.post('/seen_message/:id', verifyToken, async (req, res) => {
+  const id = req.params.id
+
+  // try {
+  //   const response = User.findOneAndUpdate(
+  //     { "_id": req.myInfo.me._id, "notifications._id": id },
+  //     {
+  //       "$set": {
+  //         "notifications.$.seen": true
+  //       }
+  //     });
+  //   res.status(200).json({ response })
+  // } catch (err) {
+  //   res.status(500).json({ err: err.message, mes: 'error', id: req.myInfo.me._id })
+  // }
+  User.findById(req.myInfo.me._id)
+    .then((user) => {
+      const notifications = user.notifications.id(id); // returns a matching subdocument
+      if (!notifications) throw new Error('Didn\'t find message with this id');
+      // return res.status(404).json({ message: 'Didn\'t find message with this id' })
+      notifications.seen = true // updates the address while keeping its schema       
+      // address.zipCode = req.body.zipCode; // individual fields can be set directly
+
+      return user.save(); // saves document with subdocuments and triggers validation
+    })
+    .then((user) => {
+      res.status(200).json({ user });
+    })
+    .catch(e => res.status(400).json({ message: e.message }));
+
+
+  // res.status(200).json({ myInfo: req.myInfo.me, id })
+})
+
 // get all users "protected route"
 router.get('/', verifyToken, async (req, res) => {
   try {

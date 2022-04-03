@@ -5,6 +5,7 @@ import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import Slide from '@mui/material/Slide';
 import { UserContext } from './App';
+import { useSnackbar } from 'notistack';
 
 const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -31,6 +32,7 @@ const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, r
 const SendMoney = () => {
   const [values, setValues] = useState({ name: '', cash: '' })
   const { setProfile } = useContext(UserContext)
+  const { enqueueSnackbar } = useSnackbar();
 
   const [error, setError] = React.useState({
     message: '',
@@ -42,7 +44,9 @@ const SendMoney = () => {
       let res = await axios.post(`http://localhost:8000/money/send/${name}?amount=${cash}`, {},
         { headers: { 'x-access-token': localStorage.getItem('token') } });
       setProfile(res.data.me)
-      console.log(res.data)
+      // console.log(res.data.me.notifications.at(-1))
+      enqueueSnackbar(res.data.me.notifications.at(-1).message, { variant: 'info' });
+
       setError(prev => ({ ...prev.error, close: false }));
     } catch (err) {
       // console.error(error.response.data)
