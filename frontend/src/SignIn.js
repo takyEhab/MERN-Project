@@ -61,7 +61,7 @@ export default function SignIn() {
   }
 
   const handleSubmit = (event) => {
-    setError({ isError: false, message: '', close: true });
+    setError({ isError: false, message: '', close: true  });
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console

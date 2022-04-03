@@ -10,9 +10,19 @@ router.post('/send/:name', verifyToken, async (req, res) => {
 
     const amount = Number(req.query.amount)
 
+    if (Math.sign(amount) != 1) {
+      return res.status(400).json({ message: 'Sending cash must be positive number' })
+    }
+    if (req.myInfo.me.cash < amount) {
+      return res.status(406).json({ message: 'You don\'t have enough money' })
+    }
+
     const sendTo = await User.findOneAndUpdate({ "username": req.params.name },
       { $inc: { cash: +amount }, $push: { notifications: { message: `${amount}$ RECEIVED from ${req.myInfo.me.username}` } } },
-      { new: true }).catch(err => console.log(err))
+      { new: true })
+
+    if (!sendTo) return res.status(404).json({ message: 'User is not found' })
+
 
     const me = await User.findByIdAndUpdate(req.myInfo.me._id,
       { $inc: { cash: -amount }, $push: { notifications: { message: `${amount}$ SENT to ${sendTo.username}` } } },

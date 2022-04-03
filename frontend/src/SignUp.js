@@ -52,7 +52,7 @@ export default function SignUp(props) {
 
 
   const handleSubmit = (event) => {
-    setError({ isError: false, message: '', close: false });
+    setError({ isError: false, message: '', close: true });
 
     event.preventDefault();
 

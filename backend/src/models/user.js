@@ -4,7 +4,8 @@ const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-
 
 const messagesSchema = new mongoose.Schema({
   message: String,
-  time: { type: Date, default: Date.now }
+  time: { type: Date, default: Date.now },
+  seen: { type: Boolean, default: false }
 });
 
 const UserSchema = mongoose.Schema({
