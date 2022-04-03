@@ -12,18 +12,19 @@ import Container from '@mui/material/Container';
 import Alert from '@mui/material/Alert';
 import Slide from '@mui/material/Slide';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import { useHistory } from "react-router-dom";
-// import { useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 // import { api } from './axios'
 // import {logIn} from './store/actions'
 // import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+
 import axios from 'axios'
 const theme = createTheme();
 
 export default function SignUp(props) {
   // const dispatch = useDispatch();
-  // const { enqueueSnackbar } = useSnackbar();
-  // const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const [error, setError] = React.useState({
     message: '',
@@ -41,8 +42,9 @@ export default function SignUp(props) {
       // localStorage.setItem('CONFIG', JSON.stringify(config))
       // dispatch(logIn(res.data.user, config));
 
-      // enqueueSnackbar('you are registered successfully!', { variant: 'success' });
+      enqueueSnackbar('you are registered successfully!', { variant: 'success' });
       // history.push('/');
+      navigate('/home');
 
 
     } catch (err) {
